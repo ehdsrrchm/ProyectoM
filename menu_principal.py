@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+
 import punto_fijo
 import Newton_raphson
 import diferencias_divididas
@@ -35,32 +36,57 @@ def abrir_metodo(nombre, funcion):
     btn_reg = tk.Button(ventana, text="Regresar", command=ventana.destroy)
     btn_reg.pack(side="right", padx=20, pady=10)
 
-def crear_menu(marco):
-    def btn(nombre, func): return tk.Button(marco, text=nombre, width=30, command=lambda: abrir_metodo(nombre, func))
+def mostrar_unidad(unidad):
+    # Limpia el frame principal
+    for widget in frame.winfo_children():
+        widget.destroy()
 
-    tk.Label(marco, text="UNIDAD 1", font=("Helvetica",14,"bold")).pack(pady=5)
-    btn("Punto Fijo", punto_fijo.Punto_Fijo).pack(pady=2)
-    btn("Newton Raphson", Newton_raphson.Newton_Raphson).pack(pady=2)
+    metodos_por_unidad = {
+        "UNIDAD 1": [
+            ("Punto Fijo", punto_fijo.Punto_Fijo),
+            ("Newton Raphson", Newton_raphson.Newton_Raphson)
+        ],
+        "UNIDAD 2": [
+            ("Lagrange", lagrange.ejecutar),
+            ("Diferencias Divididas", diferencias_divididas.ejecutar),
+            ("Mínimos Cuadrados", minimos_cuadrados.ejecutar)
+        ],
+        "UNIDAD 3": [
+            ("Trapecio", trapecio.ejecutar),
+            ("Simpson 1/8", simpson_1_8.ejecutar),
+            ("Simpson 3/8 (Pendiente)", lambda: messagebox.showinfo("Método","Pendiente"))
+        ]
+    }
 
-    tk.Label(marco, text="UNIDAD 2", font=("Helvetica",14,"bold")).pack(pady=5)
-    btn("Lagrange", lagrange.ejecutar).pack(pady=2)
-    btn("Diferencias Divididas", diferencias_divididas.ejecutar).pack(pady=2)
-    btn("Mínimos Cuadrados", minimos_cuadrados.ejecutar).pack(pady=2)
+    tk.Label(frame, text=unidad, font=("Helvetica",16,"bold")).pack(pady=10)
 
-    tk.Label(marco, text="UNIDAD 3", font=("Helvetica",14,"bold")).pack(pady=5)
-    btn("Trapecio", trapecio.ejecutar).pack(pady=2)
-    btn("Simpson 1/8", simpson_1_8.ejecutar).pack(pady=2)
-    btn("Simpson 3/8 (Pendiente)", lambda: messagebox.showinfo("Método","Pendiente")).pack(pady=2)
+    for nombre, funcion in metodos_por_unidad.get(unidad, []):
+        btn = tk.Button(frame, text=nombre, width=30, command=lambda n=nombre, f=funcion: abrir_metodo(n, f))
+        btn.pack(pady=5)
+
+    # Botón para regresar al menú principal
+    btn_regresar = tk.Button(frame, text="Regresar", width=30, command=mostrar_menu_principal)
+    btn_regresar.pack(pady=20)
+
+def mostrar_menu_principal():
+    # Limpia el frame principal
+    for widget in frame.winfo_children():
+        widget.destroy()
+
+    tk.Label(frame, text="Selecciona una Unidad", font=("Helvetica",16,"bold")).pack(pady=20)
+
+    for unidad in ["UNIDAD 1", "UNIDAD 2", "UNIDAD 3"]:
+        btn = tk.Button(frame, text=unidad, width=30, command=lambda u=unidad: mostrar_unidad(u))
+        btn.pack(pady=10)
 
 # Ventana principal
 root = tk.Tk()
 root.title("Menú de Métodos Numéricos")
-centrar_ventana(root, 500, 600)
+centrar_ventana(root, 500, 400)
 
-lbl = tk.Label(root, text="Selecciona un Método", font=("Helvetica",16,"bold"))
-lbl.pack(pady=20)
 frame = tk.Frame(root)
-frame.pack()
-crear_menu(frame)
+frame.pack(pady=20)
+
+mostrar_menu_principal()
+
 root.mainloop()
-# Fin del código
