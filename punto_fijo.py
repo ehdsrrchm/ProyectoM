@@ -31,7 +31,7 @@ def Punto_Fijo():
 
     ttk.Button(root, text="Ecuación No Lineal", command=abrir_ecuacion).pack(pady=5)
     ttk.Button(root, text="Sistema de Ecuaciones", command=abrir_sistema).pack(pady=5)
-    ttk.Button(root, text="Cerrar", command=root.destroy).pack(pady=15)
+    ttk.Button(root, text="Regresar", command=root.destroy).pack(pady=15)
 
     root.mainloop()
 
