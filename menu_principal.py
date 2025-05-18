@@ -7,7 +7,8 @@ import diferencias_divididas
 import lagrange
 import minimos_cuadrados
 import trapecio
-import simpson_1_8
+import simpson_1_3
+import simpson_3_8
 
 def centrar_ventana(ventana, ancho, alto):
     pantalla_ancho = ventana.winfo_screenwidth()
@@ -34,7 +35,8 @@ def mostrar_portada():
     tk.Label(frame, text="Grupo", font=("Helvetica", 12, "bold")).pack()
     tk.Label(frame, text="2454", font=("Helvetica", 11)).pack(pady=5)
 
-    tk.Button(frame, text="Siguiente", width=20, command=mostrar_introduccion).pack(pady=30)
+    tk.Button(frame, text="Siguiente", width=20, command=mostrar_introduccion).pack(pady=10)
+    tk.Button(frame, text="Cerrar aplicación", width=20, command=root.destroy).pack(pady=5)
 
 def mostrar_introduccion():
     limpiar_frame()
@@ -54,6 +56,7 @@ def mostrar_introduccion():
     tk.Label(frame, text=intro, wraplength=400, justify="left").pack(pady=20)
     tk.Button(frame, text="Regresar", width=15, command=mostrar_portada).pack(side="left", padx=40, pady=20)
     tk.Button(frame, text="Siguiente", width=15, command=mostrar_menu_principal).pack(side="right", padx=40, pady=20)
+    tk.Button(frame, text="Cerrar aplicación", width=30, command=root.destroy).pack(pady=10)
 
 def mostrar_menu_principal():
     limpiar_frame()
@@ -61,7 +64,8 @@ def mostrar_menu_principal():
     for unidad in ["UNIDAD 1", "UNIDAD 2", "UNIDAD 3"]:
         btn = tk.Button(frame, text=unidad, width=30, command=lambda u=unidad: mostrar_unidad(u))
         btn.pack(pady=10)
-    tk.Button(frame, text="Regresar a Introducción", width=30, command=mostrar_introduccion).pack(pady=20)
+    tk.Button(frame, text="Regresar a Introducción", width=30, command=mostrar_introduccion).pack(pady=10)
+    tk.Button(frame, text="Cerrar aplicación", width=30, command=root.destroy).pack(pady=10)
 
 def mostrar_unidad(unidad):
     limpiar_frame()
@@ -77,8 +81,8 @@ def mostrar_unidad(unidad):
         ],
         "UNIDAD 3": [
             ("Trapecio", trapecio.ejecutar),
-            ("Simpson 1/8", simpson_1_8.ejecutar),
-            ("Simpson 3/8 (Pendiente)", lambda: messagebox.showinfo("Método","Pendiente"))
+            ("Simpson 1/3", simpson_1_3.ejecutar),
+            ("Simpson 3/8", simpson_3_8.ejecutar)
         ]
     }
 
@@ -92,19 +96,54 @@ def mostrar_unidad(unidad):
 def abrir_metodo(nombre, funcion):
     ventana = tk.Toplevel(root)
     ventana.title(nombre)
-    centrar_ventana(ventana, 450, 150)
+    centrar_ventana(ventana, 500, 600)
     descripcion = {
-        "Punto Fijo": "Método iterativo para encontrar raíces mediante x = g(x).",
-        "Newton Raphson": "Método iterativo para encontrar raíces usando derivadas.",
-        "Diferencias Divididas": "Interpolación con diferencias divididas.",
-        "Lagrange": "Polinomio de interpolación de Lagrange.",
-        "Mínimos Cuadrados": "Regresión lineal por mínimos cuadrados.",
-        "Trapecio": "Integración numérica por trapecio.",
-        "Simpson 1/8": "Integración numérica por Simpson 1/8."
+        "Punto Fijo": (
+            "Método iterativo para encontrar raíces resolviendo x = g(x). "
+            "Para funciones escalares, se usa la iteración directa. "
+            "En sistemas no lineales, el método se extiende aplicando iterativamente "
+            "las funciones vectoriales para cada variable, buscando convergencia "
+            "del vector solución."
+        ),
+        "Newton Raphson": (
+            "Método iterativo que encuentra raíces mediante aproximaciones usando "
+            "la función y su derivada. Para funciones escalares se usa la derivada, "
+            "y para sistemas no lineales se emplea la matriz Jacobiana para resolver "
+            "un sistema lineal que actualiza el vector solución en cada iteración, "
+            "logrando una convergencia rápida si la estimación inicial es adecuada."
+        ),
+        "Diferencias Divididas": (
+            "El método de diferencias divididas es una técnica para construir un polinomio interpolador "
+            "que pasa exactamente por un conjunto de puntos dados. Se basa en calcular incrementos de la función "
+            "en puntos cercanos, organizándolos en una tabla de diferencias divididas que facilita el cálculo "
+            "de los coeficientes del polinomio."
+        ),
+        "Lagrange": (
+            "El método de interpolación de Lagrange es una forma directa de construir un polinomio que pasa por un "
+            "conjunto de puntos sin necesidad de resolver sistemas de ecuaciones. Utiliza funciones base llamadas "
+            "polinomios de Lagrange, cada uno de los cuales es cero en todos los puntos excepto en uno."
+        ),
+        "Mínimos Cuadrados": (
+            "El método de mínimos cuadrados es una técnica estadística usada para ajustar una curva o línea a un conjunto "
+            "de datos experimentales minimizando la suma de los cuadrados de las diferencias entre los valores observados "
+            "y los valores predichos por el modelo."
+        ),
+        "Trapecio": (
+            "El método del trapecio es una técnica sencilla para la integración numérica que aproxima el área bajo una curva "
+            "dividiendo el intervalo en segmentos pequeños y calculando el área de trapecios entre los puntos."
+        ),
+        "Simpson 1/3": (
+            "El método de Simpson 1/3 mejora la precisión respecto al método del trapecio al aproximar la función mediante "
+            "polinomios cuadráticos. Usa coeficientes específicos que permiten calcular la integral con mayor exactitud."
+        ),
+        "Simpson 3/8": (
+            "El método de Simpson 3/8 es una variante que utiliza polinomios cúbicos para aproximar la función "
+            "en segmentos de tres subintervalos. Es útil cuando el número de puntos no es múltiplo de dos."
+        )
     }
     tk.Label(ventana, text=descripcion.get(nombre, "No disponible."), wraplength=400, justify="left").pack(pady=10)
-    tk.Button(ventana, text="Siguiente", command=lambda: [ventana.destroy(), funcion()]).pack(side="left", padx=20, pady=10)
-    tk.Button(ventana, text="Regresar", command=ventana.destroy).pack(side="right", padx=20, pady=10)
+    tk.Button(ventana, text="Siguiente", command=lambda: [ventana.destroy(), funcion()]).pack(side="right", padx=20, pady=10)
+    tk.Button(ventana, text="Regresar", command=ventana.destroy).pack(side="left", padx=20, pady=10)
 
 def limpiar_frame():
     for widget in frame.winfo_children():

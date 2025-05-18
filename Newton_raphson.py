@@ -14,7 +14,7 @@ def centrar_ventana(ventana, ancho, alto):
 def Newton_Raphson():
     ventana = tk.Toplevel()
     ventana.title("Newton-Raphson")
-    centrar_ventana(ventana, 600, 500)  # Corregido: antes decía ventana_pf
+    centrar_ventana(ventana, 500, 600)  # Tamaño igual al menú principal
 
     # Mostrar sistema textual
     frame_sys = ttk.LabelFrame(ventana, text="Sistema de Ecuaciones")
@@ -43,7 +43,7 @@ def Newton_Raphson():
 
     btn_calc = ttk.Button(frame_in, text="Calcular", command=lambda: calcular(entries, text_res))
     btn_calc.grid(row=4, column=0, columnspan=2, pady=10)
-    btn_reg = ttk.Button(frame_in, text="Cerrar", command=ventana.destroy)
+    btn_reg = ttk.Button(frame_in, text="Cerrar Metodo", command=ventana.destroy)
     btn_reg.grid(row=4, column=2, padx=10)
 
     # Resultados

@@ -17,7 +17,7 @@ def centrar_ventana(ventana, ancho, alto):
 def Punto_Fijo():
     root = tk.Tk()
     root.title("Método de Punto Fijo")
-    centrar_ventana(root, 400, 200)
+    centrar_ventana(root, 500, 600)
 
     ttk.Label(root, text="Seleccione qué desea resolver:", font=("Arial", 12)).pack(pady=20)
 
@@ -40,7 +40,7 @@ def Punto_Fijo():
 def resolver_ecuacion(parent):
     ventana = tk.Toplevel(parent)
     ventana.title("Punto Fijo - Ecuación")
-    centrar_ventana(ventana, 700, 450) # El ancho de la ventana ahora es 700
+    centrar_ventana(ventana, 500, 600) # El ancho de la ventana ahora es 700
 
     frame_ecuacion = ttk.LabelFrame(ventana, text="Ecuación")
     frame_ecuacion.pack(padx=10, pady=10, fill="x")
@@ -113,7 +113,7 @@ def resolver_ecuacion(parent):
 
     calcular_button = ttk.Button(frame_datos, text="Calcular", command=calcular)
     calcular_button.grid(row=3, column=0, columnspan=2, pady=10)
-    cerrar_button = ttk.Button(frame_datos, text="Cerrar", command=lambda: cerrar_ecuacion(ventana, parent))
+    cerrar_button = ttk.Button(frame_datos, text="Cerrar Metodo", command=lambda: cerrar_ecuacion(ventana, parent))
     cerrar_button.grid(row=3, column=2, padx=10, pady=10)
 
     def al_cerrar():
@@ -131,7 +131,7 @@ def cerrar_ecuacion(ventana, parent): # Función para cerrar la ventana Ecuacion
 def resolver_sistema(parent):
     ventana = tk.Toplevel(parent)
     ventana.title("Métodos Iterativos - Sistema No Lineal")
-    centrar_ventana(ventana, 700, 600)
+    centrar_ventana(ventana, 500, 600)
 
     frame_sys = ttk.LabelFrame(ventana, text="Sistema de Ecuaciones")
     frame_sys.pack(padx=10, pady=10, fill="x")
@@ -213,7 +213,7 @@ def resolver_sistema(parent):
 
     btn_calc = ttk.Button(frame_in, text="Calcular", command=calcular)
     btn_calc.grid(row=5, column=0, columnspan=2, pady=10)
-    btn_cerrar = ttk.Button(frame_in, text="Cerrar", command=lambda: cerrar_sistema(ventana, parent))
+    btn_cerrar = ttk.Button(frame_in, text="Cerrar Metodo", command=lambda: cerrar_sistema(ventana, parent))
     btn_cerrar.grid(row=5, column=2, padx=10)
 
     def al_cerrar():
